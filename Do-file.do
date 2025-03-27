@@ -33,3 +33,6 @@ synth pct_votes_Con ///
     QUAL_ALL_lvl4_plus_sh ///
     welfaresocialprotectionpercapitalpercapita, ///
     trunit(3) trperiod(2007) fig
+
+
+# comment test
