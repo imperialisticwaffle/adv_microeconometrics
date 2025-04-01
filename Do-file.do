@@ -1,4 +1,17 @@
 
+* List 10 highest values
+gsort -totalimpact_finlosswapyr
+list Local_Authority totalimpact_finlosswapyr in 1/160
+
+*blackpool is most affected local authority
+
+* List 10 lowest values
+gsort totalimpact_finlosswapyr
+list Local_Authority totalimpact_finlosswapyr in 1/160 
+
+*least affected: City of London, Hart, Cambridge, Wokingham, South Oxfordshire, Rutland, South Northamptonshire, Guildford, South Bucks, Chiltern, Winchester
+
+
 preserve 
 
 *keep only most and least affected Local_Authorities
