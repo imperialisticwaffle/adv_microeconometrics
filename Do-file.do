@@ -59,9 +59,13 @@ preserve
 drop if unit_id==5
 
 *fill in data in regions with just one missing observation
-replace pct_votes_UKIP=0 if missing(pct_votes_UKIP)
+sort Region year
+by Region: replace pct_votes_UKIP = pct_votes_UKIP[_n-1] if missing(pct_votes_UKIP)
 
 
 synth pct_votes_UKIP pct_votes_UKIP(2000) pct_votes_UKIP(2001) pct_votes_UKIP(2002) pct_votes_UKIP(2003) ///
  pct_votes_UKIP(2004) pct_votes_UKIP(2005) pct_votes_UKIP(2006) pct_votes_UKIP(2007) ///
  pct_votes_UKIP(2008) pct_votes_UKIP(2009) pct_votes_UKIP(2010) pct_votes_UKIP(2011), trunit(4) trperiod(2012) fig
+
+
+
