@@ -1,71 +1,128 @@
 
-*alternatively consider broad regions e.g. North England and see how welfare impacted its gdp (or UKIP vote share)
+ 
+ 
+ 
+ ********** EXTERNAL ESS DATATSET ************
+ 
+ 
+ 
+ 
+ 
+ *maybe improve synthetic control by adding more donor units. for example, use combined ESS dataset for data on regions in France and Germany. create a common variable to indicate the average level of support for extremist parties for each region and for each year. keep also variables related to austerity measures (if they were enacted during that period in DE and FR) and variables that are very similar to the predictors used for UK. finally combine the datasets and unify the variable names and compute the synthetic control analysis
+ 
+ *note that the regions in the ESS dataset are comparable to the regions in the Fetzer UK dataset, since the ESS uses NUTS (an EU geocode standard) for its regions, and the Fetzer regions correspond roughly to the UK's NUTS regions.
+ 
 
-* Preserve the original dataset
-preserve
+keep if cntry=="BE" | cntry =="FR"
+ 
+*we need to see whether the interviews always ended in the same year as they started. 
+pwcorr inwyye inwyys
+*it turns out they are perfectly correlated and inwyye inwyr are interchangeable. So we can use inwyr to fill in missing values in inwyye
 
-* Collapse the data to compute the mean of totalimpact_finlosswapyr by Region
-collapse (mean) mean_totalimpact=totalimpact_finlosswapyr, by(Region)
+*one data set, so that the regression for years work
+replace inwyye=inwyr if inwyr<=2005
 
-* Sort the resulting dataset in ascending order by the mean_totalimpact
-sort mean_totalimpact
-
-* List the three regions with the lowest mean totalimpact_finlosswapyr
-display "Three Regions with the Lowest Mean totalimpact_finlosswapyr:"
-list Region mean_totalimpact in 1/3
-
-* List the region with the highest mean totalimpact_finlosswapyr (last observation after sort)
-display "Region with the Highest Mean totalimpact_finlosswapyr:"
-list Region mean_totalimpact in -1
-
-* Restore the original dataset
-restore
-
-
-
-
-* Preserve the original dataset so that you can restore it later if needed.
-preserve
-
-* Collapse the dataset by Region and year,
-* calculating the mean of pct_votes_UKIP only for observations where pct_votes_UKIP > 0.
-collapse (mean) mean_pct_votes_UKIP = pct_votes_UKIP if pct_votes_UKIP > 0, by(Region year)
-
-* Sort the results by Region and year for clarity.
-sort Region year
-
-* Display the computed means.
-list Region year mean_pct_votes_UKIP
-
-* Restore the original dataset.
-restore
+* renaming to year for convenience
+rename inwyye year
 
 
+			
 
-* Collapse the data so that each observation represents a Region in a given year.
-* Here we aggregate by computing the mean for each numeric variable.
-collapse (mean) totalimpact_finlosswapyr pct_votes_UKIP, by(Region year)
-
-* Make the dataset a proper panel dataset
-encode Region, gen(unit_id)
-tsset unit_id year
-
-*drop regions with too much missing election data: London, Scotland and Wales
-drop if unit_id==3 | unit_id ==6 | unit_id== 9
-
-preserve 
-
-*(controversial) drop region with second highest austerity: North West; keep only regions with mid- to low-austerity
-drop if unit_id==5
-
-*fill in data in regions with just one missing observation
-sort Region year
-by Region: replace pct_votes_UKIP = pct_votes_UKIP[_n-1] if missing(pct_votes_UKIP)
+			
+******** FOR BELGIUM *********
 
 
-synth pct_votes_UKIP pct_votes_UKIP(2000) pct_votes_UKIP(2001) pct_votes_UKIP(2002) pct_votes_UKIP(2003) ///
- pct_votes_UKIP(2004) pct_votes_UKIP(2005) pct_votes_UKIP(2006) pct_votes_UKIP(2007) ///
- pct_votes_UKIP(2008) pct_votes_UKIP(2009) pct_votes_UKIP(2010) pct_votes_UKIP(2011), trunit(4) trperiod(2012) fig
+* Convert the numeric variable regionde (with value labels) to a string variable
+decode regionbe, gen(regionbename)
 
+* Ensure region is a string variable so that you can assign codes like "DE1"
+			tostring region, replace
+
+
+* Update missing NUTS‑1 codes for pre‑2010 Belgian observations using regiondename
+replace region = "BE2" if region == "" & regionbename == "Flemish region"
+replace region = "BE1" if region == "" & regionbename == "Brussels region"
+replace region = "BE3" if region == "" & regionbename == "Walloon region"
+
+
+
+* Convert Belgian NUTS‑2 codes to the three Belgian NUTS‑1 codes
+
+replace region = "BE1" if inlist(region, "BE10", "BE11")
+replace region = "BE2" if inlist(region, "BE20", "BE21", "BE22", "BE23", "BE24", "BE25")
+replace region = "BE3" if inlist(region, "BE30", "BE31", "BE32", "BE33", "BE34", "BE35")
+
+
+
+******** FOR FRANCE ********
+
+* Convert the numeric variable regionfr (which has a value label) to a string variable
+decode regionfr, gen(regionfrname)
+
+
+* Step 1: Change regionfr to "Bassin Parisien Est" under the specified condition.
+replace regionfrname = "Bassin Parisien Est" if year < 2010 & regionfrname == "Bassin Parisien Ouest"
+
+* Step 2: Rename the value "Bassin Parisien Est" to "Bassin Parisien".
+replace regionfrname = "Bassin Parisien" if regionfrname == "Bassin Parisien Est"
+
+*    mapping ESS2 regionfrname to the desired "FRx" codes
+replace region = "FR1" if year < 2010 & region == "" & regionfrname == "Région parisienne"
+replace region = "FR2" if year < 2010 & region == "" & regionfrname == "Bassin Parisien"
+replace region = "FR3" if year < 2010 & region == "" & (regionfrname == "Nord - Pas-de-Calais" | regionfrname == "Nord")
+replace region = "FR4" if year < 2010 & region == "" & regionfrname == "Est"
+replace region = "FR5" if year < 2010 & region == "" & regionfrname == "Ouest"
+replace region = "FR6" if year < 2010 & region == "" & (regionfrname == "Sud Ouest" | regionfrname == "Sud Est")
+replace region = "FR7" if year < 2010 & region == "" & regionfrname == "Centre-Est"
+replace region = "FR8" if year < 2010 & region == "" & regionfrname == "Méditerranée"
+
+
+
+
+* Replace region with the specified new value if it has the specified old value
+replace region = "FR24" if region == "FRB0"
+replace region = "FR26" if region == "FRC1"
+replace region = "FR43" if region == "FRC2"
+replace region = "FR25" if region == "FRD1"
+replace region = "FR23" if region == "FRD2"
+replace region = "FR30" if region == "FRE1"
+replace region = "FR22" if region == "FRE2"
+replace region = "FR42" if region == "FRF1"
+replace region = "FR21" if region == "FRF2"
+replace region = "FR41" if region == "FRF3"
+replace region = "FR51" if region == "FRG0"
+replace region = "FR52" if region == "FRH0"
+replace region = "FR61" if region == "FRI1"
+replace region = "FR63" if region == "FRI2"
+replace region = "FR53" if region == "FRI3"
+replace region = "FR81" if region == "FRJ1"
+replace region = "FR62" if region == "FRJ2"
+replace region = "FR72" if region == "FRK1"
+replace region = "FR71" if region == "FRK2"
+replace region = "FR82" if region == "FRL0"
+replace region = "FR83" if region == "FRM0"
+replace region = "FRA1" if region == "FRY1"
+replace region = "FRA2" if region == "FRY2"
+replace region = "FRA3" if region == "FRY3"
+replace region = "FRA4" if region == "FRY4"
+replace region = "FRA5" if region == "FRY5"
+
+
+
+*replace NUTS 2 code with NUTS 1 code
+replace region = "FR1" if year >= 2010 & region == "FR10"
+replace region = "FR2" if year >= 2010 & ( region == "FR20" | region == "FR21" | region == "FR22")
+replace region = "FR2" if year >= 2010 & (region == "FR23" | region == "FR24" | region == "FR25" | region == "FR26")
+replace region = "FR3" if year >= 2010 & (region == "FR30")
+replace region = "FR4" if year >= 2010 & (region == "FR40" | region == "FR41" | region == "FR42" | region == "FR43")
+replace region = "FR5" if year >= 2010 & (region == "FR50" | region == "FR51" | region == "FR52" | region == "FR53" | region == "FR54")
+replace region = "FR6" if year >= 2010 & (region == "FR60" | region == "FR61" | region == "FR62" | region == "FR63")
+replace region = "FR7" if year >= 2010 & (region == "FR70" | region == "FR71" | region == "FR72" | region == "FR73")
+replace region = "FR8" if year >= 2010 & (region == "FR80" | region == "FR81" | region == "FR82" | region == "FR83")
+
+
+
+
+*compute an average far-right party vote share for every region in each year. Plus, do the same for the average turnout for each region and year
 
 
