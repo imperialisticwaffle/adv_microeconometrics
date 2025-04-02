@@ -13,6 +13,19 @@
  *note that the regions in the ESS dataset are comparable to the regions in the Fetzer UK dataset, since the ESS uses NUTS (an EU geocode standard) for its regions, and the Fetzer regions correspond roughly to the UK's NUTS regions.
  
 
+* Download the ZIP file from the internet and save it locally as "ESS.dta.zip"
+copy "https://www.dropbox.com/scl/fi/g98b5spe5deb5zib27li5/ESS.dta.zip?rlkey=s5dgxychbal0nbpjf9ue9zf83&st=w16j1ic6&dl=1" "ESS.dta.zip", replace
+
+* Unzip the file (this extracts ESS.dta into the current working directory)
+unzipfile "ESS.dta.zip", replace
+
+* Load the unzipped Stata dataset
+use "Combined dataset.dta", clear
+
+
+
+
+
 keep if cntry=="BE" | cntry =="FR"
  
 *we need to see whether the interviews always ended in the same year as they started. 
