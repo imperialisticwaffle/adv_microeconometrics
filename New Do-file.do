@@ -695,3 +695,7 @@ drop if year < 2004
 synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_mining(2004) sm_avg_constr(2004) sm_avg_agri(2004)    ///
 	  sm_avg_manuf(2004) sm_avg_level3orbelow(2004) sm_avg_level4plus(2004), trunit(25) trperiod(2012) fig
 
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP vote share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
