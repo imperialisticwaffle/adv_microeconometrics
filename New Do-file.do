@@ -699,3 +699,60 @@ gr_edit .yaxis1.title.text = {}
 gr_edit .yaxis1.title.text.Arrpush UKIP vote share
 gr_edit .xaxis1.title.text = {}
 gr_edit .xaxis1.title.text.Arrpush Year
+
+
+
+	
+	
+************ PLACEBO TEST(S) *****************
+
+
+*setting treatment period equal to 2009
+synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_mining(2004) sm_avg_constr(2004) sm_avg_agri(2004)    ///
+	  sm_avg_manuf(2004) sm_avg_level3orbelow(2004) sm_avg_level4plus(2004), trunit(25) trperiod(2009) fig  
+	  
+	  
+*setting treated unit equal to South West (UK)
+	  
+synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_mining(2004) sm_avg_constr(2004) sm_avg_agri(2004)    ///
+	  sm_avg_manuf(2004) sm_avg_level3orbelow(2004) sm_avg_level4plus(2004), trunit(55) trperiod(2012) fig  
+	  
+	  
+	  
+
+************ LEAVE ONE OUT TEST(S) *****************
+
+
+
+* dropping Yorkshire from the donor pool to see if predictions were overly reliant on Yorkshire
+preserve 
+
+drop if unit_id==58
+synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_mining(2004) sm_avg_constr(2004) sm_avg_agri(2004)    ///
+	  sm_avg_manuf(2004) sm_avg_level3orbelow(2004) sm_avg_level4plus(2004), trunit(25) trperiod(2012) fig  
+	 
+	 
+restore
+
+
+* dropping East Midlands from the donor pool to see if predictions were overly reliant on East Midlands
+preserve 
+
+drop if unit_id==51
+synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_mining(2004) sm_avg_constr(2004) sm_avg_agri(2004)    ///
+	  sm_avg_manuf(2004) sm_avg_level3orbelow(2004) sm_avg_level4plus(2004), trunit(25) trperiod(2012) fig  
+	 
+	 
+restore  
+	  
+	
+	
+* dropping both East Midlands and Yorkshire from the donor pool to see if predictions were overly reliant on them
+preserve 
+
+drop if unit_id==51 | unit_id==58
+synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_mining(2004) sm_avg_constr(2004) sm_avg_agri(2004)    ///
+	  sm_avg_manuf(2004) sm_avg_level3orbelow(2004) sm_avg_level4plus(2004), trunit(25) trperiod(2012) fig  
+	 
+	 
+restore  
