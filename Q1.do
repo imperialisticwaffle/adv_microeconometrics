@@ -70,6 +70,14 @@ ssc install synth
 
 synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2010) fig
 
+gr_edit dta_file = ""
+gr_edit .dta_date = ""
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP Vote Share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
+
+
 
 
 
