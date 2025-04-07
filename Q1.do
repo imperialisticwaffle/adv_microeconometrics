@@ -55,13 +55,11 @@ collapse (mean) totalimpact_finlosswapyr pct_votes_UKIP CMiningAll_sh DManufAll_
 encode Region, gen(unit_id)
 tsset unit_id year
 
-*drop regions with too much missing election data: London, Scotland and Wales
-drop if unit_id==3 | unit_id ==6 | unit_id== 9
 
 preserve 
 
-*(controversial) drop region with second highest austerity: North West; keep only regions with mid- to low-austerity
-drop if unit_id==5
+*Drop regions with high austerity impact: North West, London, Scotland and Wales; keep only regions with mid- to low-austerity
+drop if unit_id==5 | unit_id==3 | unit_id ==6 | unit_id== 9
 
 *fill in data in regions with just one missing observation
 sort Region year
