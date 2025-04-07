@@ -691,7 +691,9 @@ drop if year < 2004
 
 * spare part: sm_avg_farright(2005(1)2010)
 	  
-	  
+* Install synth package
+ssc install synth 
+
 synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_mining(2004) sm_avg_constr(2004) sm_avg_agri(2004)    ///
 	  sm_avg_manuf(2004) sm_avg_level3orbelow(2004) sm_avg_level4plus(2004), trunit(25) trperiod(2012) fig
 
