@@ -20,7 +20,7 @@ keep if inlist(Local_Authority, "Hart", "Cambridge", "Wokingham", "South Oxfords
     | Local_Authority == "Blackpool" | Local_Authority == "Winchester"
 
 *re-index the time variable
-egen time_index = group(year)
+egen time_index = group(year) if !missing(UKIPPct)
 
 
 * Make the dataset a proper panel dataset
@@ -32,4 +32,4 @@ tsset unit_id time_index
 ssc install synth 
 
 * blackpool is unit 1
-synth UKIPPct totalimpact_finlosswapyr, trunit(1) trperiod(2) fig
+synth UKIPPct AgeAbove60UKshare DManufAll_sh FConstrAll_sh AAgricultureAll_sh QUAL_ALL_lvl4_plus_sh, trunit(1) trperiod(2) fig
