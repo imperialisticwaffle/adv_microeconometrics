@@ -1,5 +1,10 @@
 
-*alternatively consider broad regions e.g. North England and see how welfare impacted its gdp (or UKIP vote share)
+* Download the file using a direct download link (change dl=0 to dl=1)
+copy "https://www.dropbox.com/scl/fi/bgdq0bhp00ktdefn94e7d/UK_localauthorities_elections_austerity.dta?rlkey=bc4z8xeg9677n4g7rbmzygmo7&st=u24oby12&dl=1" "UK_localauthorities_elections_austerity.dta", replace
+
+* Load the unzipped Stata dataset
+use "UK_localauthorities_elections_austerity.dta", clear
+
 
 * Preserve the original dataset
 preserve
