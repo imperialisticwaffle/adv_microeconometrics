@@ -40,11 +40,11 @@ list Region year mean_pct_votes_UKIP
 * Restore the original dataset.
 restore
 
-
+gen level3orbelow = QUAL_ALL_lvl1_sh + QUAL_ALL_lvl2_sh + QUAL_ALL_lvl3_sh
 
 * Collapse the data so that each observation represents a Region in a given year.
 * Here we aggregate by computing the mean for each numeric variable.
-collapse (mean) totalimpact_finlosswapyr pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh QUAL_ALL_lvl4_plus_sh, by(Region year)
+collapse (mean) totalimpact_finlosswapyr pct_votes_UKIP CMiningAll_sh DManufAll_sh AAgricultureAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, by(Region year)
 
 * Make the dataset a proper panel dataset
 encode Region, gen(unit_id)
@@ -65,7 +65,7 @@ by Region: replace pct_votes_UKIP = pct_votes_UKIP[_n-1] if missing(pct_votes_UK
 * Install synth package
 ssc install synth 
 
-synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh QUAL_ALL_lvl4_plus_sh, trunit(4) trperiod(2010) fig
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2010) fig
 
 
 
