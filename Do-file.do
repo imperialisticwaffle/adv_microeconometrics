@@ -44,7 +44,7 @@ restore
 
 * Collapse the data so that each observation represents a Region in a given year.
 * Here we aggregate by computing the mean for each numeric variable.
-collapse (mean) totalimpact_finlosswapyr pct_votes_UKIP, by(Region year)
+collapse (mean) totalimpact_finlosswapyr pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh QUAL_ALL_lvl4_plus_sh, by(Region year)
 
 * Make the dataset a proper panel dataset
 encode Region, gen(unit_id)
@@ -63,9 +63,9 @@ sort Region year
 by Region: replace pct_votes_UKIP = pct_votes_UKIP[_n-1] if missing(pct_votes_UKIP)
 
 
-synth pct_votes_UKIP pct_votes_UKIP(2000) pct_votes_UKIP(2001) pct_votes_UKIP(2002) pct_votes_UKIP(2003) ///
- pct_votes_UKIP(2004) pct_votes_UKIP(2005) pct_votes_UKIP(2006) pct_votes_UKIP(2007) ///
- pct_votes_UKIP(2008) pct_votes_UKIP(2009) pct_votes_UKIP(2010) pct_votes_UKIP(2011), trunit(4) trperiod(2012) fig
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh QUAL_ALL_lvl4_plus_sh ///
+ pct_votes_UKIP(2008)  pct_votes_UKIP(2011), trunit(4) trperiod(2010) fig
+
 
 
 
