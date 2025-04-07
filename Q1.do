@@ -62,6 +62,8 @@ drop if unit_id==5
 sort Region year
 by Region: replace pct_votes_UKIP = pct_votes_UKIP[_n-1] if missing(pct_votes_UKIP)
 
+* Install synth package
+ssc install synth 
 
 synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh QUAL_ALL_lvl4_plus_sh, trunit(4) trperiod(2010) fig
 
