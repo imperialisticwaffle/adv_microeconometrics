@@ -63,8 +63,7 @@ sort Region year
 by Region: replace pct_votes_UKIP = pct_votes_UKIP[_n-1] if missing(pct_votes_UKIP)
 
 
-synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh QUAL_ALL_lvl4_plus_sh ///
- pct_votes_UKIP(2008)  pct_votes_UKIP(2011), trunit(4) trperiod(2010) fig
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh QUAL_ALL_lvl4_plus_sh, trunit(4) trperiod(2010) fig
 
 
 
