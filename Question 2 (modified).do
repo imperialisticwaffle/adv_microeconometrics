@@ -21,8 +21,6 @@ list Local_Authority totalimpact_finlosswapyr in 1/320
 *incl. up to bottom 20 most austere regions, we also have: South Cambridgeshire, Mole Valley, Surrey Heath, Harborough, Horsham, Cotswold, Waverley, East Hampshire, Mid Sussex
 
 
-preserve 
-
 *keep only most and least affected Local_Authorities
 /* gen tr_and_donor = ("Blackpool", "City of London", "Hart", "Cambridge", "Wokingham", "South Oxfordshire", "Rutland" "South Northamptonshire", "Guildford", "South Bucks", "Chiltern", "Winchester", "South Cambridgeshire", "Mole Valley", "Surrey Heath", "Harborough", "Horsham", "Cotswold", "Waverley", "East Hampshire", "Mid Sussex")
 
@@ -30,15 +28,10 @@ keep in inlist(Local_Authority, tr_and_donor) */
 
 keep if inlist(Local_Authority, "Hart", "Cambridge", "Wokingham", "South Oxfordshire", "Rutland", "South Northamptonshire", ///
 "Guildford", "South Bucks", "Chiltern") ///
-    | Local_Authority == "Blackpool" | Local_Authority == "Winchester"
+    | Local_Authority == "Blackpool" | Local_Authority == "Winchester" | Local_Authority == "City of London"
 	
 
-*re-index the time variable; creating a year index for all currently kept boroughs based on year of EU parliament election
-egen time_index = group(year) if !missing(UKIPPct)
 
-* Make the dataset a proper panel dataset
-encode Local_Authority, gen(unit_id)
-tsset unit_id time_index
 
 
 * Install synth package
@@ -47,12 +40,13 @@ ssc install synth
 * blackpool is unit 1
 * predictors as % share above 60, % working in manufacturing (flatlined from 2001), % working in construction, % working in agriculture (flatlined from 2001)
 * this is effectively saying the treatment period is 2009 not 2010
-synth UKIPPct AgeAbove60UKshare DManufAll_sh FConstrAll_sh AAgricultureAll_sh ///
+*synth UKIPPct AgeAbove60UKshare DManufAll_sh FConstrAll_sh AAgricultureAll_sh ///
 QUAL_ALL_lvl4_plus_sh, trunit(1) trperiod(2) fig
 
 * list Local_Authority DManufAll_sh if Local_Authority == "City of London" 
 * list Local_Authority FConstrAll_sh if Local_Authority == "City of London" 
 
+preserve
 
 * adjusting to include EP 1999 results
 clear
@@ -80,30 +74,34 @@ append using temp_1999.dta
 * sort by local authority to enable easier flatlining of chosen predictors
 sort Local_Authority
 
+*re-index the time variable; creating a year index for all currently kept boroughs based on year of EU parliament election
+egen time_index = group(year) if !missing(UKIPPct)
+
+* Make the dataset a proper panel dataset
+encode Local_Authority, gen(unit_id)
+tsset unit_id time_index
 
 * flatlining
-replace AgeAbove60UKshare = AgeAbove60UKshare[_n-1] if missing(AgeAbove60UKshare)
-replace AAgricultureAll_sh = AAgricultureAll_sh[_n-1] if missing(AAgricultureAll_sh)
-replace QUAL_ALL_lvl4_plus_sh = QUAL_ALL_lvl4_plus_sh[_n-1] if missing(QUAL_ALL_lvl4_plus_sh)
-replace AgeBet30to60UKshare = AgeBet30to60UKshare[_n-1] if missing(AgeBet30to60UKshare)
-replace RoutineOccUKShareWithin = RoutineOccUKShareWithin[_n-1] if missing(RoutineOccUKShareWithin)
-replace QUAL_ALL_lvl1_sh = QUAL_ALL_lvl1_sh[_n-1] if missing(QUAL_ALL_lvl1_sh)
-replace QUAL_ALL_lvl2_sh = QUAL_ALL_lvl2_sh[_n-1] if missing(QUAL_ALL_lvl2_sh)
-replace QUAL_ALL_lvl3_sh = QUAL_ALL_lvl3_sh[_n-1] if missing(QUAL_ALL_lvl3_sh)
+replace AgeAbove60UKshare = AgeAbove60UKshare[_n+1] if missing(AgeAbove60UKshare)
+replace AAgricultureAll_sh = AAgricultureAll_sh[_n+1] if missing(AAgricultureAll_sh)
+replace QUAL_ALL_lvl4_plus_sh = QUAL_ALL_lvl4_plus_sh[_n+1] if missing(QUAL_ALL_lvl4_plus_sh)
+replace AgeBet30to60UKshare = AgeBet30to60UKshare[_n+1] if missing(AgeBet30to60UKshare)
+replace RoutineOccUKShareWithin = RoutineOccUKShareWithin[_n+1] if missing(RoutineOccUKShareWithin)
+replace QUAL_ALL_lvl1_sh = QUAL_ALL_lvl1_sh[_n+1] if missing(QUAL_ALL_lvl1_sh)
+replace QUAL_ALL_lvl2_sh = QUAL_ALL_lvl2_sh[_n+1] if missing(QUAL_ALL_lvl2_sh)
+replace QUAL_ALL_lvl3_sh = QUAL_ALL_lvl3_sh[_n+1] if missing(QUAL_ALL_lvl3_sh)
 
-
-* regenerate new panel dataset
-egen time_index2 = group(year) if !missing(UKIPPct)
-encode Local_Authority, gen(unit_id2)
-tsset unit_id2 time_index2
-
+*remove the below command as soon as you have data on Hart and changed the input command above accordingly
+drop if Local_Authority=="Hart"
 
 * running synthetic control - blackpool as treatment unit is id 26
-synth UKIPPct AgeAbove60UKshare DManufAll_sh FConstrAll_sh AAgricultureAll_sh ///
-QUAL_ALL_lvl4_plus_sh, trunit(26) trperiod(3) fig
+synth UKIPPct UKIPPct(3) UKIPPct(2) AgeAbove60UKshare DManufAll_sh FConstrAll_sh AAgricultureAll_sh ///
+QUAL_ALL_lvl4_plus_sh, trunit(1) trperiod(3) fig
 
 
 * agriculture and level4+ qualification predictors are relatively inaccurate in the synthetic - experimenting below with different predictors
 
+ synth UKIPPct AgeBet30to60UKshare DManufAll_sh FConstrAll_sh RoutineOccUKShareWithin ///
+QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(1) trperiod(3) fig
 /* synth UKIPPct AgeBet30to60UKshare DManufAll_sh FConstrAll_sh RoutineOccUKShareWithin ///
 QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(1) trperiod(2) fig */
