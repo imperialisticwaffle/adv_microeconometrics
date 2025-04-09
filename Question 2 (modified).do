@@ -1,3 +1,9 @@
+* Download the file using a direct download link (change dl=0 to dl=1)
+copy "https://www.dropbox.com/scl/fi/bgdq0bhp00ktdefn94e7d/UK_localauthorities_elections_austerity.dta?rlkey=bc4z8xeg9677n4g7rbmzygmo7&st=u24oby12&dl=1" "UK_localauthorities_elections_austerity.dta", replace
+
+* Load the unzipped Stata dataset
+use "UK_localauthorities_elections_austerity.dta", clear
+
 
 
 * List 10 highest values
