@@ -45,7 +45,6 @@ ssc install synth
 
 * blackpool is unit 1
 * predictors as % share above 60, % working in manufacturing (flatlined from 2001), % working in construction, % working in agriculture (flatlined from 2001)
-* this is effectively saying the treatment period is 2009 not 2010
 synth UKIPPct AgeAbove60UKshare DManufAll_sh FConstrAll_sh AAgricultureAll_sh ///
 QUAL_ALL_lvl4_plus_sh, trunit(1) trperiod(2009) fig
 
