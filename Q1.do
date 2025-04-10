@@ -86,10 +86,22 @@ gr_edit .xaxis1.title.text.Arrpush Year
 *setting treatment year to 2005
 synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2005) fig
 
-
+gr_edit dta_file = ""
+gr_edit .dta_date = ""
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP Vote Share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
  
 *setting treated unit equal to South West (UK)
 synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(8) trperiod(2009) fig
+
+gr_edit dta_file = ""
+gr_edit .dta_date = ""
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP Vote Share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
 
 
 
@@ -103,6 +115,13 @@ drop if unit_id==11
 
 synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2009) fig
 
+gr_edit dta_file = ""
+gr_edit .dta_date = ""
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP Vote Share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
+
 restore 
 
 
@@ -112,6 +131,13 @@ preserve
 drop if unit_id==2
 
 synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2009) fig
+
+gr_edit dta_file = ""
+gr_edit .dta_date = ""
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP Vote Share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
 
 restore
 
@@ -123,6 +149,13 @@ preserve
 drop if unit_id==2 | unit_id==11
 
 synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2009) fig
+
+gr_edit dta_file = ""
+gr_edit .dta_date = ""
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP Vote Share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
 
 restore
 
