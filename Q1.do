@@ -67,7 +67,7 @@ by Region: replace pct_votes_UKIP = pct_votes_UKIP[_n-1] if missing(pct_votes_UK
 * Install synth package
 ssc install synth 
 
-synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2010) fig
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2009) fig
 
 gr_edit dta_file = ""
 gr_edit .dta_date = ""
