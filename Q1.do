@@ -56,7 +56,6 @@ encode Region, gen(unit_id)
 tsset unit_id year
 
 
-preserve 
 
 *Drop regions with high austerity impact: North West, London, Scotland and Wales; keep only regions with mid- to low-austerity
 drop if unit_id==5 | unit_id==3 | unit_id ==6 | unit_id== 9
@@ -79,5 +78,52 @@ gr_edit .xaxis1.title.text.Arrpush Year
 
 
 
+
+	
+************ PLACEBO TEST(S) *****************
+
+
+*setting treatment year to 2005
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2005) fig
+
+
+ 
+*setting treated unit equal to South West (UK)
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(8) trperiod(2009) fig
+
+
+
+************ LEAVE ONE OUT TEST(S) *****************
+
+
+* dropping Yorkshire from the donor pool to see if predictions were overly reliant on Yorkshire
+preserve 
+
+drop if unit_id==11
+
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2009) fig
+
+restore 
+
+
+* dropping East Midlands from the donor pool to see if predictions were overly reliant on East Midlands
+preserve 
+
+drop if unit_id==2
+
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2009) fig
+
+restore
+
+
+	
+* dropping both East Midlands and Yorkshire from the donor pool to see if predictions were overly reliant on them
+preserve 
+
+drop if unit_id==2 | unit_id==11
+
+synth pct_votes_UKIP  DManufAll_sh AAgricultureAll_sh CMiningAll_sh FConstrAll_sh level3orbelow QUAL_ALL_lvl4_plus_sh AgeAbove60UKshare, trunit(4) trperiod(2009) fig
+
+restore
 
 
