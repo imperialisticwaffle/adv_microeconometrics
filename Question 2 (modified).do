@@ -115,3 +115,61 @@ QUAL_ALL_lvl4_plus_sh, trunit(1) trperiod(2009) fig
 
 synth UKIPPct UKIPPct(2004) UKIPPct(2009) AgeBet30to60UKshare DManufAll_sh FConstrAll_sh  ///
 QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(1) trperiod(2009) fig
+
+* adjusting chart axes
+gr_edit dta_file = ""
+gr_edit .dta_date = ""
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP Vote Share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
+
+
+*******************************
+* LEAVE ONE OUT AND PLACEBO TESTS
+*******************************
+
+
+******* PLACEBO TEST **********
+
+* set treatment year to 2004 (in time placebo)
+
+synth UKIPPct UKIPPct(2004) UKIPPct(2009) AgeBet30to60UKshare DManufAll_sh FConstrAll_sh ///
+QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(1) trperiod(2004) fig
+
+* set treatment unit to south oxfordshire (in space placebo)
+
+synth UKIPPct UKIPPct(2004) UKIPPct(2009) AgeBet30to60UKshare DManufAll_sh FConstrAll_sh ///
+QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(10) trperiod(2009) fig
+
+* adjust  chart axes
+gr_edit dta_file = ""
+gr_edit .dta_date = ""
+gr_edit .yaxis1.title.text = {}
+gr_edit .yaxis1.title.text.Arrpush UKIP Vote Share
+gr_edit .xaxis1.title.text = {}
+gr_edit .xaxis1.title.text.Arrpush Year
+
+
+
+
+******** LEAVE ONE OUT TESTS ************
+
+* local authorities w/ greatest weights are guildford and hart
+
+* drop guildford as unit weight is .613, assessing whether the synthetic control is overly reliant on guildford
+preserve
+drop if unit_id == 5
+synth UKIPPct UKIPPct(2004) UKIPPct(2009) AgeBet30to60UKshare DManufAll_sh FConstrAll_sh ///
+QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(1) trperiod(2009) fig
+
+restore
+
+
+* drop hart as unit weight is .387, assessing whether the synthetic control is overly reliant on hart
+preserve
+drop if unit_id == 6
+synth UKIPPct UKIPPct(2004) UKIPPct(2009) AgeBet30to60UKshare DManufAll_sh FConstrAll_sh ///
+QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(1) trperiod(2009) fig
+
+restore
