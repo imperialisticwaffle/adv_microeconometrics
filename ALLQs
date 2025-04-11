@@ -1212,3 +1212,16 @@ synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_minin
 	 
 	 
 restore  
+
+
+
+	
+* dropping all UK regions from the donor pool to see if predictions were overly reliant on them
+preserve 
+
+drop if unit_id==51 | unit_id==52 | unit_id==53 | unit_id==54 | unit_id==55 | unit_id==56 | unit_id==57 | unit_id==58
+synth avg_farright_3yr sm_avg_farright(2011) sm_avg_farright(2010) 	sm_avg_mining(2004) sm_avg_constr(2004) sm_avg_agri(2004)    ///
+	  sm_avg_manuf(2004) sm_avg_level3orbelow(2004) sm_avg_level4plus(2004), trunit(25) trperiod(2012) fig  
+	 
+	 
+restore  
