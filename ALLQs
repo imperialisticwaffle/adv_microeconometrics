@@ -1,4 +1,9 @@
 
+******************** APPENDIX A – Q1 **************************
+
+
+
+
 * Download the file using a direct download link (change dl=0 to dl=1)
 copy "https://www.dropbox.com/scl/fi/bgdq0bhp00ktdefn94e7d/UK_localauthorities_elections_austerity.dta?rlkey=bc4z8xeg9677n4g7rbmzygmo7&st=u24oby12&dl=1" "UK_localauthorities_elections_austerity.dta", replace
 
@@ -161,7 +166,10 @@ restore
 
 
 
-***************** Q2 ***********************
+
+
+
+******************** APPENDIX B – Q2 **************************
 
 
 
@@ -290,7 +298,17 @@ QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(1) trperiod(2009) fig
 
 
 
-***************************** APPENDIX ************************
+
+
+
+
+
+
+***************************** APPENDIX C ************************
+
+
+
+
 
 * Download the file using a direct download link (change dl=0 to dl=1)
 copy "https://www.dropbox.com/scl/fi/bgdq0bhp00ktdefn94e7d/UK_localauthorities_elections_austerity.dta?rlkey=bc4z8xeg9677n4g7rbmzygmo7&st=u24oby12&dl=1" "UK_localauthorities_elections_austerity.dta", replace
@@ -456,7 +474,7 @@ QUAL_ALL_lvl3_sh QUAL_ALL_lvl2_sh QUAL_ALL_lvl1_sh, trunit(1) trperiod(2009) fig
  
  
  
- ********** EXTERNAL ESS DATATSET ************
+ ********** APPENDIX D – EXTERNAL ESS DATATSET ************
  
  
  
